@@ -3,6 +3,9 @@
 <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.emoji.co.uk%2Ffiles%2Fgoogle-emojis%2Factivity-android%2F8354-slot-machine.png&f=1&nofb=1" alt="slot machine"?>
 <p align="center">A smart contract slot machine</p>
 </p>
+<br/>
+<br/>
+<br/>
 
 
 ## Installation
@@ -25,4 +28,4 @@ $ npx oz create
 ```
 ## Todo
 
-- [ ] basic UI 
+- [ ] basic UI
