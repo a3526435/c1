@@ -1,18 +1,40 @@
-require('dotenv').config();
+require("dotenv").config();
+require("chai/register-should");
+const { GSNDevProvider } = require("@openzeppelin/gsn-provider");
+const solcStable = {
+  version: "0.5.7"
+};
+
+const solcNightly = {
+  version: "nightly",
+  docker: true
+};
+
+const useSolcNightly = process.env.SOLC_NIGHTLY === "true";
 const mnemonic = process.env.MNEMONIC;
 const HDWalletProvider = require("truffle-hdwallet-provider");
 // Create your own key for Production environments (https://infura.io/)
-const INFURA_ID = process.env.INFURA_ID || 'd6760e62b67f4937ba1ea2691046f06d';
+const INFURA_ID = process.env.INFURA_ID || "d6760e62b67f4937ba1ea2691046f06d";
 
-
-const configNetwok = (network, networkId, path = "m/44'/60'/0'/0/", gas = 4465030, gasPrice = 1e10) => ({
-  provider: () => new HDWalletProvider(
-    mnemonic, `https://${network}.infura.io/v3/${INFURA_ID}`, 
-        0, 1, true, path
+const configNetwok = (
+  network,
+  networkId,
+  path = "m/44'/60'/0'/0/",
+  gas = 4465030,
+  gasPrice = 1e10
+) => ({
+  provider: () =>
+    new HDWalletProvider(
+      mnemonic,
+      `https://${network}.infura.io/v3/${INFURA_ID}`,
+      0,
+      1,
+      true,
+      path
     ),
   networkId,
   gas,
-  gasPrice,
+  gasPrice
 });
 
 module.exports = {
@@ -20,13 +42,21 @@ module.exports = {
   // to customize your Truffle configuration!
   networks: {
     development: {
-      host: "127.0.0.1",
-      port: 8545,
-      network_id: "*",
+      provider: new GSNDevProvider("http://localhost:8545", {
+        txfee: 70,
+        useGSN: false,
+        // The last two accounts defined in test.sh
+        ownerAddress: "0x26be9c03ca7f61ad3d716253ee1edcae22734698",
+        relayerAddress: "0xdc5fd04802ea70f6e27aec12d56716624c98e749"
+      }),
+      network_id: "*" // eslint-disable-line camelcase
     },
-    ropsten: configNetwok('ropsten', 3),
-    kovan: configNetwok('kovan', 42),
-    rinkeby: configNetwok('rinkeby', 4),
-    main: configNetwok('mainnet', 1),
+    ropsten: configNetwok("ropsten", 3),
+    kovan: configNetwok("kovan", 42),
+    rinkeby: configNetwok("rinkeby", 4),
+    main: configNetwok("mainnet", 1)
   },
+  compilers: {
+    solc: useSolcNightly ? solcNightly : solcStable
+  }
 };
