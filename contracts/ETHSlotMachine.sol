@@ -15,11 +15,11 @@ contract ETHSlotMachine is Initializable, Ownable {
   uint256 public jackpot_number;
   uint256 private _ran_num;
   uint256 private _seed;
-  uint256 private _total;
-  uint256 private _win;
+  uint256 public total;
+  uint256 public win;
   address payable collecter;
 
-  event Win(address indexed _winner, string _prize, uint256 _value);
+  event Win(address indexed winner, string _prize, uint256 _value);
   event Deposit(address indexed _depositor, uint256 _value);
   event SetPrice(uint256 _newPrice);
 
@@ -53,13 +53,13 @@ contract ETHSlotMachine is Initializable, Ownable {
   function getLucky() external payable costs(price) {
     uint256 ran = _random();
     uint256 amount = pot;
-    _total = _total.add(1);
+    total = total.add(1);
     if (ran == jackpot_number) {
       //send 100% pot value
       pot = 0;
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
-      _win = _win.add(1);
+      win = win.add(1);
       emit Win(msg.sender, "First Prize", amount);
       return;
     } else if (ran.mod(20) == 0) {
@@ -68,7 +68,7 @@ contract ETHSlotMachine is Initializable, Ownable {
       pot = pot.sub(amount);
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
-      _win = _win.add(1);
+      win = win.add(1);
       emit Win(msg.sender, "Second Prize", amount);
       return;
     } else if (ran.mod(10) == 0) {
@@ -77,7 +77,7 @@ contract ETHSlotMachine is Initializable, Ownable {
       pot = pot.sub(amount);
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
-      _win = _win.add(1);
+      win = win.add(1);
       emit Win(msg.sender, "Third Prize", amount);
       return;
     } else if (ran.mod(4) == 0) {
@@ -86,7 +86,7 @@ contract ETHSlotMachine is Initializable, Ownable {
       pot = pot.sub(amount);
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
-      _win = _win.add(1);
+      win = win.add(1);
       emit Win(msg.sender, "Forth Prize", amount);
       return;
     } else if (ran.mod(2) == 0) {
@@ -95,7 +95,7 @@ contract ETHSlotMachine is Initializable, Ownable {
       pot = pot.sub(amount);
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
-      _win = _win.add(1);
+      win = win.add(1);
       emit Win(msg.sender, "Fifth Prize", amount);
       return;
     } else {
@@ -130,9 +130,5 @@ contract ETHSlotMachine is Initializable, Ownable {
 
   function updateJackpotNumber(uint256 num) public onlyOwner {
     jackpot_number = num;
-  }
-
-  function getOdds() public view returns (uint256, uint256) {
-    return (_win, _total);
   }
 }

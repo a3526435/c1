@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { PublicAddress, Button } from 'rimble-ui';
-import styles from './Web3Info.module.scss';
+import React, { useState, useEffect } from "react";
+import { EthAddress, Button } from "rimble-ui";
+import styles from "./Web3Info.module.scss";
 
 export default function Web3Info(props) {
   const { web3Context } = props;
@@ -11,7 +11,9 @@ export default function Web3Info(props) {
     const accounts = web3Context.accounts;
     const lib = web3Context.lib;
     let balance =
-      accounts && accounts.length > 0 ? lib.utils.fromWei(await lib.eth.getBalance(accounts[0]), 'ether') : 'Unknown';
+      accounts && accounts.length > 0
+        ? lib.utils.fromWei(await lib.eth.getBalance(accounts[0]), "ether")
+        : "Unknown";
     setBalance(balance);
   };
 
@@ -34,12 +36,17 @@ export default function Web3Info(props) {
       <h3> {props.title} </h3>
       <div className={styles.dataPoint}>
         <div className={styles.label}>Network:</div>
-        <div className={styles.value}>{networkId ? `${networkId} – ${networkName}` : 'No connection'}</div>
+        <div className={styles.value}>
+          {networkId ? `${networkId} – ${networkName}` : "No connection"}
+        </div>
       </div>
       <div className={styles.dataPoint}>
         <div className={styles.label}>Your address:</div>
         <div className={styles.value}>
-          <PublicAddress label="" address={accounts && accounts.length ? accounts[0] : 'Unknown'} />
+          <EthAddress
+            label=""
+            address={accounts && accounts.length ? accounts[0] : "Unknown"}
+          />
         </div>
       </div>
       <div className={styles.dataPoint}>
@@ -55,10 +62,12 @@ export default function Web3Info(props) {
           <div className={styles.label}>Accounts & Signing Status</div>
           <div className={styles.value}>Access Granted</div>
         </div>
-      ) : !!networkId && providerName !== 'infura' ? (
+      ) : !!networkId && providerName !== "infura" ? (
         <div>
           <br />
-          <Button onClick={() => requestAuth(web3Context)}>Request Access</Button>
+          <Button onClick={() => requestAuth(web3Context)}>
+            Request Access
+          </Button>
         </div>
       ) : (
         <div></div>
