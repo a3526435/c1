@@ -9,7 +9,7 @@ export default function Activity(props) {
       <Card.Content>
         <Card.Header content="Recent Activity" />
       </Card.Content>
-      <Card.Content style={{ maxHeight: "300px", overflowY: "scroll" }}>
+      <Card.Content style={{ maxHeight: "300px", overflowY: "auto" }}>
         <Feed>
           {logs.map((log, index) => (
             <Feed.Event key={index + log} className="transition fade in">
