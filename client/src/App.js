@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useWeb3Injected } from "@openzeppelin/network/react";
-import Web3Info from "./components/Web3Info/index.js";
-import { Grid, Container, Header, Button } from "semantic-ui-react";
+import {
+  Grid,
+  Container,
+  Header,
+  Button,
+  List,
+  Image,
+  Feed,
+} from "semantic-ui-react";
 import { Blockie } from "rimble-ui";
 import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
 
@@ -13,6 +20,7 @@ function App() {
   const [contract, setContract] = useState(null);
   const [state, setState] = useState({});
   const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const getBalance = async (web3Context) => {
     const accounts = web3Context.accounts;
@@ -59,6 +67,7 @@ function App() {
   };
 
   const getLucky = async () => {
+    setLoading(true);
     let response;
     if (contract) {
       await contract.methods
@@ -72,10 +81,9 @@ function App() {
         });
     }
     refreshValues(contract);
-    let log = response.events["Win"]
-      ? response.events["Win"].returnValues
-      : ["", "deposit"];
-    setLogs([...logs, log[1]]);
+    let log = response.events["Response"].returnValues;
+    setLogs([...logs, { player: log[0], message: log[1], value: log[2] }]);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -126,14 +134,36 @@ function App() {
           </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column>
-              {logs.map((log, index) => (
-                <Header as="h3" key={`${index}${log}`}>
-                  {log}
-                </Header>
-              ))}
+              <Feed>
+                {logs.map((log, index) => (
+                  <Feed.Event key={index + log}>
+                    <Feed.Label>
+                      <Image
+                        as={Blockie}
+                        opts={{ seed: log.player, size: 10 }}
+                      />
+                    </Feed.Label>
+                    <Feed.Content>
+                      <Feed.Date content={log.message} />
+                      <Feed.Summary
+                        content={Number(
+                          injected.lib.utils.fromWei(log.value, "ether")
+                        ).toFixed(4)}
+                      />
+                    </Feed.Content>
+                  </Feed.Event>
+                ))}
+              </Feed>
             </Grid.Column>
             <Grid.Column>
-              <Button primary fluid content="Play" onClick={() => getLucky()} />
+              <Button
+                primary
+                fluid
+                content="Play"
+                onClick={getLucky}
+                loading={loading}
+                disabled={loading}
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>
