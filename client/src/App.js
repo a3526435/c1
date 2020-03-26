@@ -17,36 +17,9 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const reels = [
-    [
-      "Satoshi", // first price
-      "bitcoin", //second price
-      "ethereum", //third price
-      "Dai", //forth price
-      "kitty", //fifth price
-      "bitconnect", //lose
-      "craig wrigth", //lose
-      "pepe frog", //lose
-    ],
-    [
-      "Satoshi",
-      "bitcoin",
-      "ethereum",
-      "Dai",
-      "kitty",
-      "pepe frog",
-      "bitconnect",
-      "craig wrigth",
-    ],
-    [
-      "Satoshi",
-      "bitcoin",
-      "ethereum",
-      "Dai",
-      "kitty",
-      "craig wrigth",
-      "pepe frog",
-      "bitconnect",
-    ],
+    [0, 1, 2, 3, 4, 5, 6, 7],
+    [0, 1, 2, 3, 4, 7, 5, 6],
+    [0, 1, 2, 3, 4, 6, 7, 5],
   ];
   const [currentReel, setCurrentReel] = useState([
     { index: 0 },
@@ -101,7 +74,6 @@ function App() {
   };
 
   const setNewCurrentReel = (prizeID) => {
-    console.log(prizeID);
     const newCurrentReel = reels.map((reel) => {
       const randNo = prizeID < 5 ? prizeID : 5;
       return {
