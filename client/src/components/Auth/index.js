@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { MetaMaskButton } from "rimble-ui";
 
 export default function Auth(props) {
@@ -11,9 +11,10 @@ export default function Auth(props) {
       console.error(e);
     }
   };
+  const requestAccess = useCallback(() => requestAuth(web3Context), []);
 
   return (
-    <MetaMaskButton.Outline onClick={() => requestAuth(web3Context)}>
+    <MetaMaskButton.Outline onClick={requestAccess}>
       Connect with MetaMask
     </MetaMaskButton.Outline>
   );

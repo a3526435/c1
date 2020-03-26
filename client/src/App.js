@@ -90,24 +90,33 @@ function App() {
     setSpinner(true);
     let response;
     if (contract) {
-      await contract.methods
-        .getLucky()
-        .send({
-          from: injected.accounts[0],
-          value: injected.lib.utils.toWei(state.price),
-        })
-        .on("receipt", (receipt) => {
-          response = receipt;
-        });
+      try {
+        await contract.methods
+          .getLucky()
+          .send({
+            from: injected.accounts[0],
+            value: injected.lib.utils.toWei(state.price),
+          })
+          .on("receipt", (receipt) => {
+            response = receipt;
+          });
+        refreshValues(contract);
+        let log = response.events["Response"].returnValues;
+        if (log[1] !== "deposit" && log[1] !== "lose") {
+          setLogs([
+            { player: log[0], message: log[1], value: log[3] },
+            ...logs,
+          ]);
+        }
+        setNewCurrentReel(Number(log[2]));
+        setSpinner(false);
+        setLoading(false);
+      } catch (e) {
+        //console.log(e);
+        setSpinner(false);
+        setLoading(false);
+      }
     }
-    refreshValues(contract);
-    let log = response.events["Response"].returnValues;
-    if (log[1] !== "deposit" && log[1] !== "lose") {
-      setLogs([{ player: log[0], message: log[1], value: log[3] }, ...logs]);
-    }
-    setNewCurrentReel(Number(log[2]));
-    setSpinner(false);
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -139,7 +148,7 @@ function App() {
             <Activity logs={logs} web3={injected} />
           </Grid.Column>
           <Grid.Column>
-            {injected.accounts[0] ? (
+            {injected.accounts && injected.accounts.length ? (
               <Button
                 primary
                 fluid

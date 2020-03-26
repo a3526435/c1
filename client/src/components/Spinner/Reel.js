@@ -12,7 +12,7 @@ import Pepe from "../../assets/pepe.png";
 export default function Reel({ reelItem, selectedReel, spinner }) {
   const imgs = [Satoshi, BTC, ETH, Dai, Kitty, Scammer, Fruad, Pepe];
   return (
-    <Grid.Column width="5" verticalAlign="middle" stretched="true">
+    <Grid.Column width="5" verticalAlign="middle">
       <div className="slot__reel-each">
         <div
           className={
