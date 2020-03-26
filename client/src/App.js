@@ -6,6 +6,7 @@ import Banner from "./components/Banner";
 import Stats from "./components/Stats";
 import Activity from "./components/Activity";
 import Spinner from "./components/Spinner";
+import Auth from "./components/Auth";
 
 function App() {
   const injected = useWeb3Injected();
@@ -14,6 +15,45 @@ function App() {
   const [state, setState] = useState({});
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const reels = [
+    [
+      "Satoshi", // first price
+      "bitcoin", //second price
+      "ethereum", //third price
+      "Dai", //forth price
+      "kitty", //fifth price
+      "bitconnect", //lose
+      "craig wrigth", //lose
+      "pepe frog", //lose
+    ],
+    [
+      "Satoshi",
+      "bitcoin",
+      "ethereum",
+      "Dai",
+      "kitty",
+      "pepe frog",
+      "bitconnect",
+      "craig wrigth",
+    ],
+    [
+      "Satoshi",
+      "bitcoin",
+      "ethereum",
+      "Dai",
+      "kitty",
+      "craig wrigth",
+      "pepe frog",
+      "bitconnect",
+    ],
+  ];
+  const [currentReel, setCurrentReel] = useState([
+    { index: 0 },
+    { index: 0 },
+    { index: 0 },
+  ]);
+  const [spinner, setSpinner] = useState(true);
 
   const getBalance = async (web3Context) => {
     const accounts = web3Context.accounts;
@@ -60,8 +100,22 @@ function App() {
     }
   };
 
+  const setNewCurrentReel = (prizeID) => {
+    console.log(prizeID);
+    const newCurrentReel = reels.map((reel) => {
+      const randNo = prizeID < 5 ? prizeID : 5;
+      return {
+        index: randNo,
+        name: reel[randNo],
+      };
+    });
+
+    setCurrentReel(newCurrentReel);
+  };
+
   const getLucky = async () => {
     setLoading(true);
+    setSpinner(true);
     let response;
     if (contract) {
       await contract.methods
@@ -77,14 +131,19 @@ function App() {
     refreshValues(contract);
     let log = response.events["Response"].returnValues;
     if (log[1] !== "deposit" && log[1] !== "lose") {
-      setLogs([{ player: log[0], message: log[1], value: log[2] }, ...logs]);
+      setLogs([{ player: log[0], message: log[1], value: log[3] }, ...logs]);
     }
+    setNewCurrentReel(Number(log[2]));
+    setSpinner(false);
     setLoading(false);
   };
 
   useEffect(() => {
     getBalance(injected);
     getContract(injected);
+    setTimeout(() => {
+      setSpinner(false);
+    }, 1000);
   }, [injected, injected.accounts, injected.networkId]);
 
   return (
@@ -96,7 +155,11 @@ function App() {
         </Grid.Row>
         <Grid.Row columns={1}>
           <Grid.Column textAlign="center">
-            <Spinner />
+            <Spinner
+              reels={reels}
+              currentReel={currentReel}
+              spinner={spinner}
+            />
           </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
@@ -104,14 +167,18 @@ function App() {
             <Activity logs={logs} web3={injected} />
           </Grid.Column>
           <Grid.Column>
-            <Button
-              primary
-              fluid
-              content="Play"
-              onClick={getLucky}
-              loading={loading}
-              disabled={loading}
-            />
+            {injected.accounts[0] ? (
+              <Button
+                primary
+                fluid
+                content="Play"
+                onClick={getLucky}
+                loading={loading}
+                disabled={loading}
+              />
+            ) : (
+              <Auth web3Context={injected} />
+            )}
           </Grid.Column>
         </Grid.Row>
       </Grid>

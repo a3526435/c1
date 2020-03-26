@@ -2,6 +2,8 @@ import React from "react";
 import { Container, Grid, Header } from "semantic-ui-react";
 
 export default function Banner(props) {
+  const { balance } = props;
+  console.log(balance);
   return (
     <Container style={{ margin: "3em" }}>
       <Grid divided="vertically" columns={2}>
@@ -9,7 +11,11 @@ export default function Banner(props) {
           <Header content="ETHSlotMachine" />
         </Grid.Column>
         <Grid.Column floated="right" textAlign="right">
-          <Header content={`${Number(props.balance).toFixed(5)} ETH`} />
+          {!isNaN(balance) ? (
+            <Header content={`${Number(balance).toFixed(5)} ETH`} />
+          ) : (
+            <></>
+          )}
         </Grid.Column>
       </Grid>
     </Container>
