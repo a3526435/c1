@@ -13,8 +13,15 @@ export default function Activity(props) {
         <Feed>
           {logs.map((log, index) => (
             <Feed.Event key={index + log} className="transition fade in">
-              <Feed.Label>
-                <Image as={Blockie} opts={{ seed: log.player, size: 10 }} />
+              <Feed.Label style={{ paddingTop: "5px" }}>
+                <Image
+                  as={Blockie}
+                  opts={{
+                    seed: log.player,
+                    size: 10,
+                    scale: 3,
+                  }}
+                />
               </Feed.Label>
               <Feed.Content>
                 <Feed.Date content={log.message} />

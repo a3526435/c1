@@ -50,6 +50,7 @@ contract ETHSlotMachine is Initializable, Ownable {
   }
 
   function getLucky() external payable costs(price) {
+    require(pot > 0, "No money in pot");
     uint256 ran = _random();
     uint256 amount = pot;
     total = total.add(1);
@@ -102,7 +103,7 @@ contract ETHSlotMachine is Initializable, Ownable {
       uint256 pot_val = (msg.value).sub(fee);
       collecter.sendValue(fee);
       pot = pot.add(pot_val);
-      emit Response(msg.sender, "deposit", pot_val);
+      emit Response(msg.sender, "lose", pot_val);
     }
   }
 

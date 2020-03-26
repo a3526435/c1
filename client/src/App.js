@@ -5,6 +5,7 @@ import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
 import Banner from "./components/Banner";
 import Stats from "./components/Stats";
 import Activity from "./components/Activity";
+import Spinner from "./components/Spinner";
 
 function App() {
   const injected = useWeb3Injected();
@@ -75,7 +76,7 @@ function App() {
     }
     refreshValues(contract);
     let log = response.events["Response"].returnValues;
-    if (log[1] != "deposit") {
+    if (log[1] !== "deposit" && log[1] !== "lose") {
       setLogs([{ player: log[0], message: log[1], value: log[2] }, ...logs]);
     }
     setLoading(false);
@@ -93,8 +94,10 @@ function App() {
         <Grid.Row columns={3} textAlign="center">
           <Stats state={state} />
         </Grid.Row>
-        <Grid.Row>
-          <h1>spinner animation</h1>
+        <Grid.Row columns={1}>
+          <Grid.Column textAlign="center">
+            <Spinner />
+          </Grid.Column>
         </Grid.Row>
         <Grid.Row columns={2}>
           <Grid.Column>
