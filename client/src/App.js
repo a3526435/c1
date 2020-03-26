@@ -8,6 +8,8 @@ import {
   List,
   Image,
   Feed,
+  Card,
+  TransitionablePortal,
 } from "semantic-ui-react";
 import { Blockie } from "rimble-ui";
 import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
@@ -82,7 +84,7 @@ function App() {
     }
     refreshValues(contract);
     let log = response.events["Response"].returnValues;
-    setLogs([...logs, { player: log[0], message: log[1], value: log[2] }]);
+    setLogs([{ player: log[0], message: log[1], value: log[2] }, ...logs]);
     setLoading(false);
   };
 
@@ -134,26 +136,38 @@ function App() {
           </Grid.Row>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <Feed>
-                {logs.map((log, index) => (
-                  <Feed.Event key={index + log}>
-                    <Feed.Label>
-                      <Image
-                        as={Blockie}
-                        opts={{ seed: log.player, size: 10 }}
-                      />
-                    </Feed.Label>
-                    <Feed.Content>
-                      <Feed.Date content={log.message} />
-                      <Feed.Summary
-                        content={Number(
-                          injected.lib.utils.fromWei(log.value, "ether")
-                        ).toFixed(4)}
-                      />
-                    </Feed.Content>
-                  </Feed.Event>
-                ))}
-              </Feed>
+              <Card>
+                <Card.Content>
+                  <Card.Header content="Recent Activity" />
+                </Card.Content>
+                <Card.Content
+                  style={{ maxHeight: "300px", overflowY: "scroll" }}
+                >
+                  <Feed>
+                    {logs.map((log, index) => (
+                      <Feed.Event
+                        key={index + log}
+                        className="transition fade in"
+                      >
+                        <Feed.Label>
+                          <Image
+                            as={Blockie}
+                            opts={{ seed: log.player, size: 10 }}
+                          />
+                        </Feed.Label>
+                        <Feed.Content>
+                          <Feed.Date content={log.message} />
+                          <Feed.Summary
+                            content={Number(
+                              injected.lib.utils.fromWei(log.value, "ether")
+                            ).toFixed(4)}
+                          />
+                        </Feed.Content>
+                      </Feed.Event>
+                    ))}
+                  </Feed>
+                </Card.Content>
+              </Card>
             </Grid.Column>
             <Grid.Column>
               <Button
