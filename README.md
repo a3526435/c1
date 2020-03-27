@@ -1,5 +1,3 @@
-# Ethereum Slot Machine 🎰🎰🎰
-<br/>
 <br/>
 <br/>
 <p align="center">
@@ -28,6 +26,8 @@ $ npx oz init
 $ npx oz compile
 $ npx oz create
 ```
+
+[view contract on etherscan](https://rinkeby.etherscan.io/address/0xe253bba5e2b71960b0b7328d04b8480b16a00706)
 ## Todo
 
-- [ ] basic UI
+- [x] basic UI
