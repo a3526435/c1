@@ -41,16 +41,12 @@ function App() {
   };
 
   const getContract = async (web3Context) => {
-    let deployedNetwork = null;
     let instance = null;
     if (ETHSlotMachine.networks) {
-      deployedNetwork = ETHSlotMachine.networks[web3Context.networkId];
-      if (deployedNetwork) {
-        instance = new injected.lib.eth.Contract(
-          ETHSlotMachine.abi,
-          deployedNetwork.address
-        );
-      }
+      instance = new web3Context.lib.eth.Contract(
+        ETHSlotMachine.abi,
+        "0xE253bbA5e2b71960B0B7328D04b8480b16a00706"
+      );
     }
     setContract(instance);
     refreshValues(instance);

@@ -2,12 +2,12 @@ require("dotenv").config();
 require("chai/register-should");
 const { GSNDevProvider } = require("@openzeppelin/gsn-provider");
 const solcStable = {
-  version: "0.5.7"
+  version: "0.5.7",
 };
 
 const solcNightly = {
   version: "nightly",
-  docker: true
+  docker: true,
 };
 
 const useSolcNightly = process.env.SOLC_NIGHTLY === "true";
@@ -34,7 +34,7 @@ const configNetwok = (
     ),
   networkId,
   gas,
-  gasPrice
+  gasPrice,
 });
 
 module.exports = {
@@ -47,16 +47,16 @@ module.exports = {
         useGSN: false,
         // The last two accounts defined in test.sh
         ownerAddress: "0x26be9c03ca7f61ad3d716253ee1edcae22734698",
-        relayerAddress: "0xdc5fd04802ea70f6e27aec12d56716624c98e749"
+        relayerAddress: "0xdc5fd04802ea70f6e27aec12d56716624c98e749",
       }),
-      network_id: "*" // eslint-disable-line camelcase
+      network_id: "*", // eslint-disable-line camelcase
     },
     ropsten: configNetwok("ropsten", 3),
     kovan: configNetwok("kovan", 42),
     rinkeby: configNetwok("rinkeby", 4),
-    main: configNetwok("mainnet", 1)
+    main: configNetwok("mainnet", 1),
   },
   compilers: {
-    solc: useSolcNightly ? solcNightly : solcStable
-  }
+    solc: useSolcNightly ? solcNightly : solcStable,
+  },
 };

@@ -1,4 +1,4 @@
-.slot__reel-each { perspective: 1000px;  margin-left: 80px;height: 300px; overflow: hidden; }
+.slot__reel-each { perspective: 1000px;  margin-left: 90px;height: 300px; overflow: hidden; }
 .slot__reel-carousel { height: 70px; transform-style: preserve-3d; animation-iteration-count: infinite; animation-timing-function: linear; animation-name: x-spin; animation-duration: 1s; margin: 13px 18px;}
 .slot__reel-carousel--stop { animation-iteration-count: 0; animation-name: stop-spin; }
 .slot__reel-cell { position: absolute; background:white;margin-top: 30px;  margin-left:15px;color: #000000; text-transform: capitalize; font-weight: bold; left: 0; width: 70px; height: 70px; line-height: 70px; text-align: center; }
@@ -25,7 +25,7 @@
 /* responsive
 ============================ */
 @media screen and (max-width: 767px) { 
-  .slot__reel-each { perspective: 1000px; height:200px; margin-left: 0px; overflow: hidden; }
+  .slot__reel-each { perspective: 1000px; height:200px; margin-left: -10px; overflow: hidden; }
   .slot__reel-carousel { margin: 13px 10px; height: 60px; }
   .slot__reel-cell { height: 60px; width: 60px; line-height: 60px; }
 }
