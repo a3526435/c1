@@ -1,17 +1,37 @@
 {
   "name": "ethereum_slot_machine",
   "version": "1.0.0",
-  "description": "",
+
+  "description": "ethereum slot machine",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "oz compile && mocha --exit --recursive test"
+    "test": "oz compile && mocha --exit --recursive test",
+    "pre-push": "cd client && npm run pre-push",
+    "pre-commit": "cd client && npm run pre-commit"
   },
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "openzeppelin",
+    "truffle",
+    "react",
+    "dapp",
+    "infura",
+    "metamask",
+    "web3",
+    "ganache",
+    "web3js",
+    "ethereum"
+  ],
+  "author": "James Shih",
+  "license": "MIT",
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "truffle-hdwallet-provider": "^1.0.17"
+  },
+  "devDependencies": {
+>>>>>>> client
     "@openzeppelin/cli": "^2.7.2",
     "@openzeppelin/contracts-ethereum-package": "^2.4.0",
     "@openzeppelin/gsn-provider": "^0.1.9",
@@ -19,15 +39,15 @@
     "@openzeppelin/test-helpers": "^0.5.4",
     "@openzeppelin/upgrades": "^2.7.1",
     "chai": "^4.2.0",
+    "eslint": "^6.8.0",
     "ganache-cli": "^6.9.1",
+    "husky": "^3.1.0",
     "mocha": "^7.1.0",
-    "sol2uml": "^1.1.15",
-    "truffle": "^5.1.16"
-  },
-  "devDependencies": {
     "prettier": "^1.19.1",
     "prettier-plugin-solidity": "^1.0.0-alpha.44",
+    "sol2uml": "^1.1.15",
     "solhint": "^3.0.0-rc.5",
-    "solhint-plugin-prettier": "0.0.4"
+    "solhint-plugin-prettier": "0.0.4",
+    "truffle": "^5.1.16"
   }
 }
