@@ -51,7 +51,7 @@ contract ETHSlotMachine is Initializable, Ownable {
     uint256 pot_val = (msg.value).sub(fee);
     collecter.sendValue(fee);
     pot = pot.add(pot_val);
-    emit Response(msg.sender, "deposit", 100, pot_val);
+    emit Response(msg.sender, "Deposit", 100, pot_val);
   }
 
   function getLucky() external payable costs(price) {
@@ -65,7 +65,7 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
-      emit Response(msg.sender, "win first prize", 0, amount);
+      emit Response(msg.sender, "Won First Prize", 0, amount);
       return;
     } else if (ran.mod(20) == 0) {
       //send 20%
@@ -74,7 +74,7 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
-      emit Response(msg.sender, "win second prize", 1, amount);
+      emit Response(msg.sender, "Won Second Prize", 1, amount);
       return;
     } else if (ran.mod(10) == 0) {
       //send 10%
@@ -83,7 +83,7 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
-      emit Response(msg.sender, "win third prize", 2, amount);
+      emit Response(msg.sender, "Won Third Prize", 2, amount);
       return;
     } else if (ran.mod(4) == 0) {
       //send 4%
@@ -92,7 +92,7 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
-      emit Response(msg.sender, "win forth prize", 3, amount);
+      emit Response(msg.sender, "Won Forth Prize", 3, amount);
       return;
     } else if (ran.mod(2) == 0) {
       //send 2%
@@ -101,14 +101,14 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
-      emit Response(msg.sender, "win fifth prize", 4, amount);
+      emit Response(msg.sender, "Won Fifth Prize", 4, amount);
       return;
     } else {
       uint256 fee = (msg.value).div(50);
       uint256 pot_val = (msg.value).sub(fee);
       collecter.sendValue(fee);
       pot = pot.add(pot_val);
-      emit Response(msg.sender, "lose", 5, pot_val);
+      emit Response(msg.sender, "Lose", 5, pot_val);
     }
   }
 

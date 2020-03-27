@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useWeb3Injected } from "@openzeppelin/network/react";
-import { Grid, Container, Button } from "semantic-ui-react";
+import { Grid, Container, Header, Button } from "semantic-ui-react";
 import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
 import Banner from "./components/Banner";
 import Stats from "./components/Stats";
@@ -16,6 +16,7 @@ function App() {
   const [state, setState] = useState({});
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [win, setWin] = useState(-1);
 
   const reels = [
     [0, 1, 2, 3, 4, 5, 6, 7],
@@ -87,6 +88,7 @@ function App() {
   };
 
   const getLucky = async () => {
+    setWin(-1);
     setLoading(true);
     setSpinner(true);
     let response;
@@ -103,11 +105,16 @@ function App() {
           });
         refreshValues(contract);
         let log = response.events["Response"].returnValues;
-        if (log[1] !== "deposit" && log[1] !== "lose") {
+        if (log[1] !== "Deposit" && log[1] !== "Lose") {
           setLogs([
             { player: log[0], message: log[1], value: log[3] },
             ...logs,
           ]);
+        }
+        if (log[1] == "Lose") {
+          setWin(0);
+        } else {
+          setWin(1);
         }
         setNewCurrentReel(Number(log[2]));
         setSpinner(false);
@@ -130,7 +137,7 @@ function App() {
 
   return (
     <>
-      <EmojiRain />
+      {win === 1 ? <EmojiRain /> : <></>}
       <Container>
         <Banner balance={balance} />
         <Grid>
@@ -139,6 +146,17 @@ function App() {
           </Grid.Row>
           <Grid.Row columns={1}>
             <Grid.Column textAlign="center">
+              {win === 1 ? (
+                <Header
+                  as="h1"
+                  content={`You ${logs[0]["message"]}`}
+                  color="green"
+                />
+              ) : win === 0 ? (
+                <Header as="h1" content="Please Try Again" color="orange" />
+              ) : (
+                <></>
+              )}
               <Spinner
                 reels={reels}
                 currentReel={currentReel}

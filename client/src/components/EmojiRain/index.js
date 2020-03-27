@@ -1,15 +1,20 @@
-import React from "react";
+import React, { Component } from "react";
 import { throttle } from "lodash";
 import "./EmojiRain.css";
 import EmojiCanvas from "./EmojiCanvas";
-import { getRandomEmoji, EmojiThemes, defaultTheme } from "./Emojis";
+import {
+  getRandomEmoji,
+  EmojiThemes,
+  jackpotTheme,
+  normalPrizeTheme,
+} from "./Emojis";
 
-class EmojiRain extends React.Component {
+class EmojiRain extends Component {
   static defaultProps = {
     maxDrops: 200,
     minFontSize: 40,
     maxFontSize: 150,
-    theme: defaultTheme,
+    theme: normalPrizeTheme,
   };
 
   getRandomNegativeInnerHeight = () =>
