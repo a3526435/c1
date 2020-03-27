@@ -1,7 +1,6 @@
 {
   "name": "ethereum_slot_machine",
   "version": "1.0.0",
-
   "description": "ethereum slot machine",
   "main": "truffle-config.js",
   "directories": {
@@ -31,7 +30,6 @@
     "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
->>>>>>> client
     "@openzeppelin/cli": "^2.7.2",
     "@openzeppelin/contracts-ethereum-package": "^2.4.0",
     "@openzeppelin/gsn-provider": "^0.1.9",
