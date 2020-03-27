@@ -155,7 +155,7 @@ function App() {
               ) : win === 0 ? (
                 <Header as="h1" content="Please Try Again" color="orange" />
               ) : (
-                <></>
+                <Header as="h1" content="Spin Me" style={{ color: "white" }} />
               )}
               <Spinner
                 reels={reels}
