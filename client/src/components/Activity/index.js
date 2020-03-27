@@ -7,7 +7,7 @@ export default function Activity(props) {
   return (
     <Card>
       <Card.Content>
-        <Card.Header content="Recent Activity" />
+        <Card.Header content="Recent Winner" />
       </Card.Content>
       <Card.Content style={{ maxHeight: "300px", overflowY: "auto" }}>
         <Feed>

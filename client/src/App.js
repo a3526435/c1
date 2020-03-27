@@ -7,6 +7,7 @@ import Stats from "./components/Stats";
 import Activity from "./components/Activity";
 import Spinner from "./components/Spinner";
 import Auth from "./components/Auth";
+import EmojiRain from "./components/EmojiRain";
 
 function App() {
   const injected = useWeb3Injected();
@@ -128,42 +129,45 @@ function App() {
   }, [injected, injected.accounts, injected.networkId]);
 
   return (
-    <Container>
-      <Banner balance={balance} />
-      <Grid>
-        <Grid.Row columns={3} textAlign="center">
-          <Stats state={state} />
-        </Grid.Row>
-        <Grid.Row columns={1}>
-          <Grid.Column textAlign="center">
-            <Spinner
-              reels={reels}
-              currentReel={currentReel}
-              spinner={spinner}
-            />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row columns={2}>
-          <Grid.Column>
-            <Activity logs={logs} web3={injected} />
-          </Grid.Column>
-          <Grid.Column>
-            {injected.accounts && injected.accounts.length ? (
-              <Button
-                primary
-                fluid
-                content="Play"
-                onClick={getLucky}
-                loading={loading}
-                disabled={loading}
+    <>
+      <EmojiRain />
+      <Container>
+        <Banner balance={balance} />
+        <Grid>
+          <Grid.Row columns={3} textAlign="center">
+            <Stats state={state} />
+          </Grid.Row>
+          <Grid.Row columns={1}>
+            <Grid.Column textAlign="center">
+              <Spinner
+                reels={reels}
+                currentReel={currentReel}
+                spinner={spinner}
               />
-            ) : (
-              <Auth web3Context={injected} />
-            )}
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Container>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2}>
+            <Grid.Column>
+              <Activity logs={logs} web3={injected} />
+            </Grid.Column>
+            <Grid.Column>
+              {injected.accounts && injected.accounts.length ? (
+                <Button
+                  primary
+                  fluid
+                  content="Play"
+                  onClick={getLucky}
+                  loading={loading}
+                  disabled={loading}
+                />
+              ) : (
+                <Auth web3Context={injected} />
+              )}
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Container>
+    </>
   );
 }
 
