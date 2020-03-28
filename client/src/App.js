@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useWeb3Injected } from "@openzeppelin/network/react";
+import { useWeb3Injected, useWeb3Network } from "@openzeppelin/network/react";
 import { Grid, Container, Button } from "semantic-ui-react";
 //import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
 import ETHSlotMachine from "./abi/ETHSlotMachine.json";
@@ -12,7 +12,16 @@ import EmojiRain from "./components/EmojiRain";
 import styles from "./Neo.module.scss";
 
 function App() {
-  const injected = useWeb3Injected();
+  const wallet = useWeb3Injected();
+  const infuraToken = "95e3823c0f62479f84423148141a37c2";
+  const infura = useWeb3Network(
+    `wss://rinkeby.infura.io/ws/v3/${infuraToken}`,
+    {
+      pollInterval: 10 * 1000,
+    }
+  );
+
+  const injected = wallet ? wallet : infura;
   const [isOwner, setIsOwner] = useState(false);
   const [balance, setBalance] = useState(0);
   const [contract, setContract] = useState(null);
