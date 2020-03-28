@@ -2,19 +2,13 @@ import React, { Component } from "react";
 import { throttle } from "lodash";
 import "./EmojiRain.css";
 import EmojiCanvas from "./EmojiCanvas";
-import {
-  getRandomEmoji,
-  EmojiThemes,
-  jackpotTheme,
-  normalPrizeTheme,
-} from "./Emojis";
+import { getRandomEmoji, jackpotTheme, normalPrizeTheme } from "./Emojis";
 
 class EmojiRain extends Component {
   static defaultProps = {
     maxDrops: 200,
     minFontSize: 40,
     maxFontSize: 150,
-    theme: normalPrizeTheme,
   };
 
   getRandomNegativeInnerHeight = () =>
@@ -53,8 +47,9 @@ class EmojiRain extends Component {
   constructor(props) {
     super(props);
 
-    const { minFontSize, maxFontSize, maxDrops, theme } = props;
+    const { minFontSize, maxFontSize, maxDrops, jackpot } = props;
     const { innerWidth, innerHeight } = window;
+    const theme = jackpot ? jackpotTheme : normalPrizeTheme;
 
     const speed = 0.3;
     const drops = this.generateDrops({
@@ -74,7 +69,6 @@ class EmojiRain extends Component {
       isDarkMode: false,
       lastUpdate: new Date().getTime(),
       speed,
-      theme,
     };
 
     this.animationFrame = requestAnimationFrame(this.handleAnimationFrame);
@@ -144,15 +138,7 @@ class EmojiRain extends Component {
   }
 
   render() {
-    const {
-      drops,
-      innerHeight,
-      innerWidth,
-      isDarkMode,
-      speed,
-      theme,
-      title,
-    } = this.state;
+    const { drops, innerHeight, innerWidth, isDarkMode } = this.state;
 
     return (
       <>

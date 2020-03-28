@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { MetaMaskButton } from "rimble-ui";
+import styles from "../../Neo.module.scss";
 
 export default function Auth(props) {
   const { web3Context } = props;
@@ -14,8 +15,8 @@ export default function Auth(props) {
   const requestAccess = useCallback(() => requestAuth(web3Context), []);
 
   return (
-    <MetaMaskButton.Outline onClick={requestAccess}>
+    <MetaMaskButton width={1} className={styles.neoBtn} onClick={requestAccess}>
       Connect with MetaMask
-    </MetaMaskButton.Outline>
+    </MetaMaskButton>
   );
 }

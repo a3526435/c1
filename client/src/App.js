@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useWeb3Injected } from "@openzeppelin/network/react";
-import { Grid, Container, Header, Button } from "semantic-ui-react";
+import { Grid, Container, Header, Message, Button } from "semantic-ui-react";
 import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
 import Banner from "./components/Banner";
 import Stats from "./components/Stats";
@@ -8,9 +8,11 @@ import Activity from "./components/Activity";
 import Spinner from "./components/Spinner";
 import Auth from "./components/Auth";
 import EmojiRain from "./components/EmojiRain";
+import styles from "./Neo.module.scss";
 
 function App() {
   const injected = useWeb3Injected();
+  const [isOwner, setIsOwner] = useState(false);
   const [balance, setBalance] = useState(0);
   const [contract, setContract] = useState(null);
   const [state, setState] = useState({});
@@ -41,12 +43,18 @@ function App() {
   };
 
   const getContract = async (web3Context) => {
+    let deployedNetwork = null;
     let instance = null;
     if (ETHSlotMachine.networks) {
-      instance = new web3Context.lib.eth.Contract(
-        ETHSlotMachine.abi,
-        "0xE253bbA5e2b71960B0B7328D04b8480b16a00706"
-      );
+      deployedNetwork = ETHSlotMachine.networks[web3Context.networkId];
+      if (deployedNetwork) {
+        instance = new web3Context.lib.eth.Contract(
+          ETHSlotMachine.abi,
+          deployedNetwork.address
+            ? deployedNetwork.address
+            : "0xE253bbA5e2b71960B0B7328D04b8480b16a00706"
+        );
+      }
     }
     setContract(instance);
     refreshValues(instance);
@@ -68,7 +76,19 @@ function App() {
         ),
       });
       getBalance(injected);
+      setIsOwner(
+        await instance.methods.isOwner().call({ from: injected.accounts[0] })
+      );
     }
+  };
+
+  const loadMoney = async () => {
+    await injected.lib.eth.sendTransaction({
+      from: injected.accounts[0],
+      to: contract._address,
+      value: injected.lib.utils.toWei(state.price),
+    });
+    refreshValues(contract);
   };
 
   const setNewCurrentReel = (prizeID) => {
@@ -107,11 +127,7 @@ function App() {
             ...logs,
           ]);
         }
-        if (log[1] == "Lose") {
-          setWin(0);
-        } else {
-          setWin(1);
-        }
+        setWin(Number(log[2]));
         setNewCurrentReel(Number(log[2]));
         setSpinner(false);
         setLoading(false);
@@ -133,26 +149,35 @@ function App() {
 
   return (
     <>
-      {win === 1 ? <EmojiRain /> : <></>}
-      <Container>
+      {win > -1 && win < 5 ? (
+        <EmojiRain jackpot={win === 0 ? true : false} />
+      ) : (
+        <></>
+      )}
+      <Container className={styles.neoApp}>
         <Banner balance={balance} />
         <Grid>
-          <Grid.Row columns={3} textAlign="center">
+          {win > 0 && win <= 5 ? (
+            <Grid.Row
+              as="h3"
+              centered
+              className={styles.container}
+              style={{ marginBottom: "4vh" }}
+            >
+              {win === 5
+                ? "Better luck next time"
+                : win === 0
+                ? "JACKPOT!!!"
+                : `You ${logs[0]["message"]}`}
+            </Grid.Row>
+          ) : (
+            <></>
+          )}
+          <Grid.Row columns={3} textAlign="center" className={styles.container}>
             <Stats state={state} />
           </Grid.Row>
-          <Grid.Row columns={1}>
-            <Grid.Column textAlign="center">
-              {win === 1 ? (
-                <Header
-                  as="h1"
-                  content={`You ${logs[0]["message"]}`}
-                  color="green"
-                />
-              ) : win === 0 ? (
-                <Header as="h1" content="Please Try Again" color="orange" />
-              ) : (
-                <Header as="h1" content="Spin Me" style={{ color: "white" }} />
-              )}
+          <Grid.Row>
+            <Grid.Column textAlign="center" style={{ marginTop: "4vh" }}>
               <Spinner
                 reels={reels}
                 currentReel={currentReel}
@@ -160,19 +185,33 @@ function App() {
               />
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row columns={2}>
-            <Grid.Column>
-              <Activity logs={logs} web3={injected} />
-            </Grid.Column>
-            <Grid.Column>
+          <Grid.Row columns={isOwner ? 3 : 2} style={{ marginTop: "4vh" }}>
+            <Activity
+              logs={logs}
+              web3={injected}
+              className={styles.container}
+            />
+            {isOwner ? (
+              <Grid.Column>
+                <Button
+                  fluid
+                  content="load"
+                  onClick={loadMoney}
+                  className={styles.neoBtn}
+                />
+              </Grid.Column>
+            ) : (
+              <></>
+            )}
+            <Grid.Column floated="right">
               {injected.accounts && injected.accounts.length ? (
                 <Button
-                  primary
                   fluid
                   content="Play"
                   onClick={getLucky}
                   loading={loading}
                   disabled={loading}
+                  className={styles.neoBtn}
                 />
               ) : (
                 <Auth web3Context={injected} />

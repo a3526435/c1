@@ -28,10 +28,12 @@ export default function Reel({ reelItem, selectedReel, spinner }) {
                 className={
                   index === selectedReel.index
                     ? "slot__reel-cell slot__reel-cell--selected"
-                    : "slot__reel-cell"
+                    : spinner
+                    ? "slot__reel-cell"
+                    : "slot__reel-cell hide"
                 }
               >
-                <Image src={imgs[each]} />
+                <Image src={imgs[each]} className="img" />
               </div>
             ))}
         </div>

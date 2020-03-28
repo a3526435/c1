@@ -1,12 +1,13 @@
 import React from "react";
 import Reel from "./Reel";
-import "./main.css";
 import { Grid } from "semantic-ui-react";
+import "./main.css";
+import styles from "../../Neo.module.scss";
 
 export default function Spinner(props) {
   const { reels, currentReel, spinner } = props;
   return (
-    <Grid vertically="true" centered>
+    <Grid vertically="true" centered className={styles.container}>
       {reels.map((reelItem, index) => (
         <Reel
           reelItem={reelItem}
@@ -18,4 +19,3 @@ export default function Spinner(props) {
     </Grid>
   );
 }
-

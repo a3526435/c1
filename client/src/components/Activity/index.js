@@ -1,11 +1,12 @@
 import React from "react";
 import { Card, Feed, Image } from "semantic-ui-react";
 import { Blockie } from "rimble-ui";
+import styles from "../../Neo.module.scss";
 
 export default function Activity(props) {
   const { logs, web3 } = props;
   return (
-    <Card>
+    <Card className={styles.container}>
       <Card.Content>
         <Card.Header content="Recent Winner" />
       </Card.Content>

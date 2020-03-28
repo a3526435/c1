@@ -1,9 +1,4 @@
 const EmojiThemes = Object.freeze({
-  balloon: Symbol.for("EmojiThemes.balloon"),
-  cat: Symbol.for("EmojiThemes.cat"),
-  fastFood: Symbol.for("EmojiThemes.fastFood"),
-  german: Symbol.for("EmojiThemes.german"),
-  hipster: Symbol.for("EmojiThemes.hipster"),
   money: Symbol.for("EmojiThemes.money"),
   party: Symbol.for("EmojiThemes.party"),
   unicorn: Symbol.for("EmojiThemes.unicorn"),

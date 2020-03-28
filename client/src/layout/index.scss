@@ -11,10 +11,11 @@ body {
   font: 112.5%/1.45em 'Lato', sans-serif;
   box-sizing: border-box;
   overflow: hidden;
-  background: $white;
+  background: $color-bg;
   color: $primary;
   font-weight: normal;
   word-wrap: break-word;
+  color:$paperBlack;
   font-kerning: normal;
   -moz-font-feature-settings: 'kern', 'liga', 'clig', 'calt';
   -ms-font-feature-settings: 'kern', 'liga', 'clig', 'calt';
