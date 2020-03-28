@@ -11,7 +11,7 @@ export default function Activity(props) {
       <Card.Content>
         <Card.Header content="Recent Winner" style={{ fontSize: "1em" }} />
       </Card.Content>
-      <Card.Content style={{ maxHeight: "300px", overflowY: "auto" }}>
+      <Card.Content style={{ maxHeight: "230px", overflowY: "auto" }}>
         <Feed>
           {winners.map((value, index) => (
             <Feed.Event
