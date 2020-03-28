@@ -163,6 +163,7 @@ function App() {
   useEffect(() => {
     getBalance(injected, metamask);
     getContract(injected);
+    setInterval(() => refreshValues(contract), 100);
     setTimeout(() => {
       setSpinner(false);
     }, 1000);
