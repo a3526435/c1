@@ -12,7 +12,7 @@ export default function Auth(props) {
       console.error(e);
     }
   };
-  const requestAccess = useCallback(() => requestAuth(web3Context), []);
+  const requestAccess = useCallback(() => requestAuth(web3Context));
 
   return (
     <MetaMaskButton width={1} className={styles.neoBtn} onClick={requestAccess}>
