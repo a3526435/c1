@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useWeb3Injected, useWeb3Network } from "@openzeppelin/network/react";
 import { Grid, Container, Button } from "semantic-ui-react";
 import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
@@ -11,17 +11,16 @@ import EmojiRain from "./components/EmojiRain";
 import styles from "./Neo.module.scss";
 
 function App() {
-  const metamask = window.ethereum;
-  const wallet = useWeb3Injected();
-  const infuraToken = "95e3823c0f62479f84423148141a37c2";
+  const infuraToken = "a8ef668930b24552a052429794c2c6d3";
   const infura = useWeb3Network(
     `wss://rinkeby.infura.io/ws/v3/${infuraToken}`,
     {
       pollInterval: 10 * 1000,
     }
   );
-
+  const wallet = useWeb3Injected();
   const injected = wallet ? wallet : infura;
+  const { lib: web3, networkId, accounts } = injected;
   const [isOwner, setIsOwner] = useState(false);
   const [balance, setBalance] = useState(0);
   const [contract, setContract] = useState(null);
@@ -43,28 +42,30 @@ function App() {
   ]);
   const [spinner, setSpinner] = useState(true);
 
-  const getBalance = async (web3Context, metamask) => {
-    const lib = web3Context.lib;
-
-    const account = metamask
-      ? metamask.selectedAddress
-      : web3Context.accounts[0];
-    if (account) {
-      let balance =
-        account && account.length > 0
-          ? lib.utils.fromWei(await lib.eth.getBalance(account), "ether")
-          : "Unknown";
-      setBalance(balance);
+  const requestAuth = async (web3Context) => {
+    try {
+      await web3Context.requestAuth();
+    } catch (e) {
+      console.error(e);
     }
   };
+  const getAccess = useCallback(() => requestAuth(injected), [injected]);
 
-  const getContract = async (web3Context) => {
+  const getBalance = useCallback(async () => {
+    setBalance(
+      accounts && accounts.length > 0
+        ? web3.utils.fromWei(await web3.eth.getBalance(accounts[0]), "ether")
+        : "Unknown"
+    );
+  }, [accounts, web3.eth, web3.utils]);
+
+  const getContract = useCallback(async () => {
     let deployedNetwork = null;
     let instance = null;
     if (ETHSlotMachine.networks) {
-      deployedNetwork = ETHSlotMachine.networks[web3Context.networkId];
+      deployedNetwork = ETHSlotMachine.networks[networkId];
       if (deployedNetwork) {
-        instance = new web3Context.lib.eth.Contract(
+        instance = new web3.eth.Contract(
           ETHSlotMachine.abi,
           deployedNetwork.address
             ? deployedNetwork.address
@@ -73,39 +74,34 @@ function App() {
       }
     }
     setContract(instance);
-    refreshValues(instance);
-  };
-  const refreshValues = async (instance) => {
-    if (instance) {
+    refreshValues();
+  }, [networkId]);
+
+  const refreshValues = useCallback(async () => {
+    if (contract) {
       setState({
         ...state,
-        total: await instance.methods.total().call(),
-        win: await instance.methods.win().call(),
-        pot: injected.lib.utils.fromWei(
-          await instance.methods.pot().call(),
-          "ether"
-        ),
-        price: injected.lib.utils.fromWei(
-          await instance.methods.price().call(),
+        total: await contract.methods.total().call(),
+        win: await contract.methods.win().call(),
+        pot: web3.utils.fromWei(await contract.methods.pot().call(), "ether"),
+        price: web3.utils.fromWei(
+          await contract.methods.price().call(),
           "ether"
         ),
       });
-      getBalance(injected);
-      setIsOwner(
-        await instance.methods.isOwner().call({ from: injected.accounts[0] })
-      );
-      setWinners(await instance.methods.getAllWinners().call());
+      setIsOwner(await contract.methods.isOwner().call({ from: accounts[0] }));
+      setWinners(await contract.methods.getAllWinners().call());
     }
-  };
+  }, [web3, contract]);
 
   const loadMoney = async () => {
     setLoading(true);
-    await injected.lib.eth.sendTransaction({
-      from: metamask ? metamask.selectedAddress : injected.accounts[0],
+    await web3.eth.sendTransaction({
+      from: accounts[0],
       to: contract._address,
-      value: injected.lib.utils.toWei(state.price),
+      value: web3.utils.toWei(state.price),
     });
-    refreshValues(contract);
+    refreshValues();
     setLoading(false);
   };
 
@@ -132,13 +128,13 @@ function App() {
         await contract.methods
           .getLucky()
           .send({
-            from: metamask ? metamask.selectedAddress : injected.accounts[0],
-            value: injected.lib.utils.toWei(state.price),
+            from: accounts[0],
+            value: web3.utils.toWei(state.price),
           })
           .on("receipt", (receipt) => {
             response = receipt;
           });
-        refreshValues(contract);
+        refreshValues();
         let log = response.events["Response"].returnValues;
         if (log[1] !== "Deposit" && log[1] !== "Lose") {
           setLogs([
@@ -158,16 +154,15 @@ function App() {
     }
   };
 
-  //console.log(metamask);
-
   useEffect(() => {
-    getBalance(injected, metamask);
-    getContract(injected);
-    setInterval(() => refreshValues(contract), 100);
+    getAccess();
+    getBalance();
+    getContract();
+    setInterval(() => refreshValues(), 100);
     setTimeout(() => {
       setSpinner(false);
     }, 1000);
-  }, [injected, injected.accounts, injected.networkId, metamask]);
+  }, [injected, accounts, networkId, getBalance, getContract, getAccess]);
 
   return (
     <>
@@ -230,7 +225,7 @@ function App() {
               <></>
             )}
             <Grid.Column floated="right">
-              {injected.accounts && injected.accounts.length ? (
+              {injected.accounts && injected.accounts[0] ? (
                 <Button
                   fluid
                   content="Play"
@@ -240,7 +235,7 @@ function App() {
                   className={styles.neoBtn}
                 />
               ) : (
-                <Auth web3Context={metamask ? metamask : injected} />
+                <Auth web3Context={injected} />
               )}
             </Grid.Column>
           </Grid.Row>
