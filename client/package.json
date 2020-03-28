@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@openzeppelin/network": "^0.4.1",
     "@openzeppelin/solidity-loader": "^1.4.6",
