@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useWeb3Injected } from "@openzeppelin/network/react";
-import { Grid, Container, Header, Message, Button } from "semantic-ui-react";
+import { Grid, Container, Button } from "semantic-ui-react";
 //import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
 import ETHSlotMachine from "./abi/ETHSlotMachine.json";
 import Banner from "./components/Banner";
