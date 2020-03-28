@@ -109,8 +109,9 @@ function App() {
   };
 
   const setNewCurrentReel = (prizeID) => {
+    const rand = Math.floor(Math.random() * (8 - 5)) + 5;
     const newCurrentReel = reels.map((reel) => {
-      const randNo = prizeID < 5 ? prizeID : 5;
+      const randNo = prizeID < 5 ? prizeID : rand;
       return {
         index: randNo,
         name: reel[randNo],
