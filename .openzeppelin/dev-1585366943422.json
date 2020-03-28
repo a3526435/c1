@@ -1,7 +1,7 @@
 {
   "contracts": {
     "ETHSlotMachine": {
-      "address": "0xBAAFB4426738db894c235f16952EcDe396C11b7c",
+      "address": "0x793ae90132b7beD2c502104D170805A92f24a143",
       "constructorCode": "6080604052612bd0806100136000396000f3fe",
       "bodyBytecodeHash": "1343d429848d1b50a404acdf7179f157ab21283c48122503090bd0cc0d23c36e",
       "localBytecodeHash": "6111bd3835d2f6226f8e432c264e08c629540c6301a83e3e7572c2913518823d",
@@ -191,31 +191,7 @@
         "hasSelfDestruct": false,
         "hasDelegateCall": false,
         "hasInitialValuesInDeclarations": false,
-        "uninitializedBaseContracts": [],
-        "storageUncheckedVars": [
-          {
-            "contract": "ETHSlotMachine",
-            "path": "contracts/ETHSlotMachine.sol",
-            "label": "winners",
-            "astId": 527,
-            "type": "t_array:dyn<t_struct<ETHSlotMachine.Winner>>",
-            "src": "774:23:5"
-          }
-        ],
-        "storageDiff": [
-          {
-            "action": "append",
-            "updated": {
-              "index": 13,
-              "contract": "ETHSlotMachine",
-              "path": "contracts/ETHSlotMachine.sol",
-              "label": "winners",
-              "astId": 527,
-              "type": "t_array:dyn<t_struct<ETHSlotMachine.Winner>>",
-              "src": "774:23:5"
-            }
-          }
-        ]
+        "uninitializedBaseContracts": []
       }
     }
   },
@@ -223,17 +199,10 @@
   "proxies": {
     "ethereum_slot_machine/ETHSlotMachine": [
       {
-        "address": "0xE253bbA5e2b71960B0B7328D04b8480b16a00706",
+        "address": "0x7c7382ED1326a9cac9794DaF434C67533155C4CB",
         "version": "1.0.0",
-        "implementation": "0x1375bfCCB770cE8CC98894c435262EBb9fF374ea",
-        "admin": "0xcB8a9213c83162AAF15801051c82ea1f3618E1c0",
-        "kind": "Upgradeable"
-      },
-      {
-        "address": "0xe1949e25Db859DfC10eB2B6E440279DE0D272793",
-        "version": "1.0.0",
-        "implementation": "0xBAAFB4426738db894c235f16952EcDe396C11b7c",
-        "admin": "0xcB8a9213c83162AAF15801051c82ea1f3618E1c0",
+        "implementation": "0x793ae90132b7beD2c502104D170805A92f24a143",
+        "admin": "0x5F0F722D9B1180c9DEC8d83a876d48F844952a2b",
         "kind": "Upgradeable"
       }
     ]
@@ -241,6 +210,6 @@
   "manifestVersion": "2.2",
   "version": "1.0.0",
   "proxyAdmin": {
-    "address": "0xcB8a9213c83162AAF15801051c82ea1f3618E1c0"
+    "address": "0x5F0F722D9B1180c9DEC8d83a876d48F844952a2b"
   }
 }

@@ -10,6 +10,12 @@ import "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol
 contract ETHSlotMachine is Initializable, Ownable {
   using SafeMath for uint256;
   using Address for address payable;
+
+  struct Winner {
+    address player;
+    string message;
+    uint256 value;
+  }
   uint256 public pot;
   uint256 public price;
   uint256 public jackpot_number;
@@ -18,6 +24,7 @@ contract ETHSlotMachine is Initializable, Ownable {
   uint256 public total;
   uint256 public win;
   address payable collecter;
+  Winner[] public winners;
 
   event Response(
     address indexed _player,
@@ -65,6 +72,13 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
+      winners.push(
+        Winner({
+          player: msg.sender,
+          message: "Won Frist Prize",
+          value: amount
+        })
+      );
       emit Response(msg.sender, "Won First Prize", 0, amount);
       return;
     } else if (ran.mod(20) == 0) {
@@ -74,6 +88,13 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
+      winners.push(
+        Winner({
+          player: msg.sender,
+          message: "Won Second Prize",
+          value: amount
+        })
+      );
       emit Response(msg.sender, "Won Second Prize", 1, amount);
       return;
     } else if (ran.mod(10) == 0) {
@@ -83,6 +104,13 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
+      winners.push(
+        Winner({
+          player: msg.sender,
+          message: "Won Third Prize",
+          value: amount
+        })
+      );
       emit Response(msg.sender, "Won Third Prize", 2, amount);
       return;
     } else if (ran.mod(4) == 0) {
@@ -92,6 +120,13 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
+      winners.push(
+        Winner({
+          player: msg.sender,
+          message: "Won Forth Prize",
+          value: amount
+        })
+      );
       emit Response(msg.sender, "Won Forth Prize", 3, amount);
       return;
     } else if (ran.mod(2) == 0) {
@@ -101,6 +136,13 @@ contract ETHSlotMachine is Initializable, Ownable {
       (msg.sender).sendValue(amount);
       msg.sender.transfer(msg.value);
       win = win.add(1);
+      winners.push(
+        Winner({
+          player: msg.sender,
+          message: "Won Fifth Prize",
+          value: amount
+        })
+      );
       emit Response(msg.sender, "Won Fifth Prize", 4, amount);
       return;
     } else {
@@ -135,5 +177,9 @@ contract ETHSlotMachine is Initializable, Ownable {
 
   function updateJackpotNumber(uint256 num) public onlyOwner {
     jackpot_number = num;
+  }
+
+  function getAllWinners() public view returns (Winner[] memory) {
+    return winners;
   }
 }

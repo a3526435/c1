@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useWeb3Injected, useWeb3Network } from "@openzeppelin/network/react";
 import { Grid, Container, Button } from "semantic-ui-react";
-//import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
-import ETHSlotMachine from "./abi/ETHSlotMachine.json";
+import ETHSlotMachine from "../../contracts/ETHSlotMachine.sol";
 import Banner from "./components/Banner";
 import Stats from "./components/Stats";
 import Activity from "./components/Activity";
@@ -28,6 +27,7 @@ function App() {
   const [contract, setContract] = useState(null);
   const [state, setState] = useState({});
   const [logs, setLogs] = useState([]);
+  const [winners, setWinners] = useState([]);
   const [loading, setLoading] = useState(false);
   const [win, setWin] = useState(-1);
 
@@ -68,7 +68,7 @@ function App() {
           ETHSlotMachine.abi,
           deployedNetwork.address
             ? deployedNetwork.address
-            : "0xE253bbA5e2b71960B0B7328D04b8480b16a00706"
+            : "0xe1949e25Db859DfC10eB2B6E440279DE0D272793"
         );
       }
     }
@@ -94,6 +94,7 @@ function App() {
       setIsOwner(
         await instance.methods.isOwner().call({ from: injected.accounts[0] })
       );
+      setWinners(await instance.methods.getAllWinners().call());
     }
   };
 
@@ -208,7 +209,7 @@ function App() {
           <Grid.Row columns={isOwner ? 3 : 2} style={{ marginTop: "4vh" }}>
             <Grid.Column>
               <Activity
-                logs={logs}
+                winners={winners}
                 web3={injected}
                 className={styles.container}
               />
