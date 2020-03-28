@@ -178,7 +178,7 @@ function App() {
       <Container className={styles.neoApp}>
         <Banner balance={balance} />
         <Grid>
-          {win > 0 && win <= 5 ? (
+          {win > -1 && win <= 5 ? (
             <Grid.Row
               as="h3"
               centered
