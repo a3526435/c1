@@ -8,7 +8,7 @@ export default function Activity(props) {
   return (
     <Card className={styles.container}>
       <Card.Content>
-        <Card.Header content="Recent Winner" />
+        <Card.Header content="Recent Winner" style={{ fontSize: "1em" }} />
       </Card.Content>
       <Card.Content style={{ maxHeight: "300px", overflowY: "auto" }}>
         <Feed>

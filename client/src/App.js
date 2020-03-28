@@ -186,11 +186,13 @@ function App() {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={isOwner ? 3 : 2} style={{ marginTop: "4vh" }}>
-            <Activity
-              logs={logs}
-              web3={injected}
-              className={styles.container}
-            />
+            <Grid.Column>
+              <Activity
+                logs={logs}
+                web3={injected}
+                className={styles.container}
+              />
+            </Grid.Column>
             {isOwner ? (
               <Grid.Column>
                 <Button
