@@ -3,6 +3,7 @@
 <p align="center">
 <img src="./banner.gif" alt="slot machine"/>
 <p align="center">A smart contract slot machine</p>
+<p align="center"><a href="https://jameshih.com/ethslot">click here to play</a></p>
 </p>
 <br/>
 <br/>
