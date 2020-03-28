@@ -7,12 +7,7 @@ export default function Auth(props) {
   const requestAuth = async (web3Context) => {
     console.log(web3Context);
     try {
-      if (web3Context.lib) {
-        await web3Context.requestAuth();
-      } else {
-        await web3Context.enable();
-      }
-      console.log(web3Context);
+      await web3Context.requestAuth();
     } catch (e) {
       console.error(e);
     }
