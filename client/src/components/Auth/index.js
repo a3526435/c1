@@ -16,7 +16,7 @@ export default function Auth(props) {
 
   return (
     <MetaMaskButton width={1} className={styles.neoBtn} onClick={requestAccess}>
-      Connect with MetaMask
+      Connect
     </MetaMaskButton>
   );
 }
