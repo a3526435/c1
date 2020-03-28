@@ -12,6 +12,7 @@ import EmojiRain from "./components/EmojiRain";
 import styles from "./Neo.module.scss";
 
 function App() {
+  const metamask = window.ethereum;
   const wallet = useWeb3Injected();
   const infuraToken = "95e3823c0f62479f84423148141a37c2";
   const infura = useWeb3Network(
@@ -42,14 +43,19 @@ function App() {
   ]);
   const [spinner, setSpinner] = useState(true);
 
-  const getBalance = async (web3Context) => {
-    const accounts = web3Context.accounts;
+  const getBalance = async (web3Context, metamask) => {
     const lib = web3Context.lib;
-    let balance =
-      accounts && accounts.length > 0
-        ? lib.utils.fromWei(await lib.eth.getBalance(accounts[0]), "ether")
-        : "Unknown";
-    setBalance(balance);
+
+    const account = metamask
+      ? metamask.selectedAddress
+      : web3Context.accounts[0];
+    if (account) {
+      let balance =
+        account && account.length > 0
+          ? lib.utils.fromWei(await lib.eth.getBalance(account), "ether")
+          : "Unknown";
+      setBalance(balance);
+    }
   };
 
   const getContract = async (web3Context) => {
@@ -69,7 +75,6 @@ function App() {
     setContract(instance);
     refreshValues(instance);
   };
-
   const refreshValues = async (instance) => {
     if (instance) {
       setState({
@@ -93,12 +98,14 @@ function App() {
   };
 
   const loadMoney = async () => {
+    setLoading(true);
     await injected.lib.eth.sendTransaction({
-      from: injected.accounts[0],
+      from: metamask ? metamask.selectedAddress : injected.accounts[0],
       to: contract._address,
       value: injected.lib.utils.toWei(state.price),
     });
     refreshValues(contract);
+    setLoading(false);
   };
 
   const setNewCurrentReel = (prizeID) => {
@@ -123,7 +130,7 @@ function App() {
         await contract.methods
           .getLucky()
           .send({
-            from: injected.accounts[0],
+            from: metamask ? metamask.selectedAddress : injected.accounts[0],
             value: injected.lib.utils.toWei(state.price),
           })
           .on("receipt", (receipt) => {
@@ -149,13 +156,15 @@ function App() {
     }
   };
 
+  //console.log(metamask);
+
   useEffect(() => {
-    getBalance(injected);
+    getBalance(injected, metamask);
     getContract(injected);
     setTimeout(() => {
       setSpinner(false);
     }, 1000);
-  }, [injected, injected.accounts, injected.networkId]);
+  }, [injected, injected.accounts, injected.networkId, metamask]);
 
   return (
     <>
@@ -207,8 +216,10 @@ function App() {
               <Grid.Column>
                 <Button
                   fluid
+                  loading={loading}
                   content="load"
                   onClick={loadMoney}
+                  disabled={loading}
                   className={styles.neoBtn}
                 />
               </Grid.Column>
@@ -226,7 +237,7 @@ function App() {
                   className={styles.neoBtn}
                 />
               ) : (
-                <Auth web3Context={injected} />
+                <Auth web3Context={metamask ? metamask : injected} />
               )}
             </Grid.Column>
           </Grid.Row>
