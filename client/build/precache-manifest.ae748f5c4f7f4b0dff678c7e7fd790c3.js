@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c474a15dbb623810015b9361bf6cc160",
+    "revision": "174960b333346c2e36fb617973e9f999",
     "url": "/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/css/2.7253a256.chunk.css"
   },
   {
-    "revision": "296aac6815fa367feaf3",
+    "revision": "698aace0b760b9ab8564",
     "url": "/static/css/main.a6740c74.chunk.css"
   },
   {
@@ -20,16 +20,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/static/js/2.341c180e.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "296aac6815fa367feaf3",
-    "url": "/static/js/main.b4362e63.chunk.js"
+    "revision": "698aace0b760b9ab8564",
+    "url": "/static/js/main.97858b91.chunk.js"
   },
   {
     "revision": "6f0234b4b87d585d06e8",
     "url": "/static/js/runtime-main.cfae3202.js"
-  },
-  {
-    "revision": "7b7143962a8ac5b17cfbaf21931a553c",
-    "url": "/static/media/ETHSlotMachine.7b714396.sol"
   },
   {
     "revision": "dce2704a3f170bf73d6ac93137220bfe",
