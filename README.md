@@ -29,6 +29,11 @@ $ npx oz create
 ```
 
 [view contract on etherscan](https://rinkeby.etherscan.io/address/0xe253bba5e2b71960b0b7328d04b8480b16a00706)
+
+## Credits
+
+- bella-1991/slotMachine [https://github.com/bella-1991/slotMachine](https://github.com/bella-1991/slotMachine)
+- andreicek/react-emoji-rain [https://github.com/andreicek/react-emoji-rain](https://github.com/andreicek/react-emoji-rain) 
 ## Todo
 
 - [x] basic UI
