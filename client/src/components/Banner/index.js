@@ -15,9 +15,7 @@ export default function Banner(props) {
         <Grid.Column floated="right" textAlign="right">
           {!isNaN(balance) ? (
             <Header content={`${Number(balance).toFixed(5)} ETH`} />
-          ) : (
-            <></>
-          )}
+          ) : null}
         </Grid.Column>
       </Grid>
     </Container>

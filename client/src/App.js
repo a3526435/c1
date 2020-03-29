@@ -169,9 +169,7 @@ function App() {
     <>
       {win > -1 && win < 5 ? (
         <EmojiRain jackpot={win === 0 ? true : false} />
-      ) : (
-        <></>
-      )}
+      ) : null}
       <Container className={styles.neoApp}>
         <Banner balance={balance} />
         <Grid>
@@ -188,9 +186,7 @@ function App() {
                 ? "JACKPOT!!!"
                 : `You ${logs[0]["message"]}`}
             </Grid.Row>
-          ) : (
-            <></>
-          )}
+          ) : null}
           <Grid.Row columns={3} textAlign="center" className={styles.container}>
             <Stats state={state} />
           </Grid.Row>
@@ -222,9 +218,7 @@ function App() {
                   className={styles.neoBtn}
                 />
               </Grid.Column>
-            ) : (
-              <></>
-            )}
+            ) : null}
             <Grid.Column floated="right">
               {injected.accounts && injected.accounts.length ? (
                 <Button
