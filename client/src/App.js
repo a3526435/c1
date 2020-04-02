@@ -173,6 +173,16 @@ function App() {
       <Container className={styles.neoApp}>
         <Banner balance={balance} />
         <Grid>
+          {injected.networkId !== 4 ? (
+            <Grid.Row
+              as="h3"
+              centered
+              className={styles.container}
+              style={{ marginBottom: "4vh" }}
+            >
+              Please switch to Rinkeby
+            </Grid.Row>
+          ) : null}
           {win > -1 && win <= 5 ? (
             <Grid.Row
               as="h3"
