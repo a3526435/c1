@@ -1,3 +1,8 @@
+// dont not use this contract for production
+// i wrote it just to make a fun frontend
+// the randomness function is not true randomness
+// and any winning transactions are subjected to frontrunning
+
 pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
